@@ -50,15 +50,15 @@ pipeline {
         }
 
         stage('5. Deploy to Kubernetes') {
-            steps {
-                bat "kubectl config use-context docker-desktop"
-                bat "powershell -Command \"(Get-Content k8s/deployment.yaml) -replace 'BUILD_TAG','${IMAGE_TAG}' | Set-Content k8s/deployment.yaml\""
-                bat "kubectl apply -f k8s/deployment.yaml --validate=false"
-                bat "kubectl apply -f k8s/service.yaml --validate=false"
-                bat "kubectl rollout status deployment/python-app --timeout=120s"
-                echo "Deployed to Kubernetes"
-            }
-        }
+    steps {
+        bat "kubectl config use-context docker-desktop"
+        bat "powershell -Command \"(Get-Content k8s/deployment.yaml) -replace 'BUILD_TAG','${IMAGE_TAG}' | Set-Content k8s/deployment.yaml\""
+        bat "kubectl apply -f k8s/deployment.yaml --validate=false"
+        bat "kubectl apply -f k8s/service.yaml --validate=false"
+        bat "kubectl rollout status deployment/python-app --timeout=120s"
+        echo "Deployed to Kubernetes"
+    }
+}
 
         stage('6. Verify') {
             steps {
